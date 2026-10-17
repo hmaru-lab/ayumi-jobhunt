@@ -67,6 +67,37 @@ main{max-width:860px;margin:0 auto;padding:16px 12px 120px}
 .badge.curated{background:#fff4e0;color:#b7791f;font-weight:700}
 .loading{text-align:center;color:var(--muted);padding:40px}
 .err-box{background:#fdecea;color:var(--danger);border-radius:8px;padding:12px;margin-bottom:12px;font-size:13px}
+
+/* tabs */
+.tabs{display:flex;gap:8px;margin-top:8px}
+.tab{flex:1;padding:8px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:13px;cursor:pointer}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* research */
+.r-card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.r-card h2{font-size:16px;margin-bottom:6px}
+.r-card h3{font-size:13px;color:var(--muted);margin:12px 0 4px}
+.r-card ul{font-size:13px;padding-left:1.2em;margin:4px 0}
+.r-card li{margin-bottom:4px}
+.r-note{font-size:12px;color:var(--muted);margin-top:6px}
+.r-stab{display:inline-block;font-size:12px;font-weight:700;border-radius:12px;padding:2px 12px;margin:4px 0 4px 6px;vertical-align:middle}
+.r-stab.ok{background:#e6f4ea;color:var(--new)}
+.r-stab.warn{background:#fff4e0;color:#b7791f}
+.r-sum{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.r-sumcard{background:#f6f4ef;border-radius:10px;padding:10px;font-size:12px}
+.r-sumcard b{font-size:13px;display:block}
+.r-sumcard p{margin-top:4px;color:#5a5648}
+.r-table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+.r-table th,.r-table td{border:1px solid #e5e1d8;padding:6px 8px;text-align:left;vertical-align:top}
+.r-table th{background:#f0ede6;white-space:nowrap}
+.r-bars{margin:8px 0}
+.r-bar-row{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:6px}
+.r-bar-row span{width:110px;flex:none;color:var(--muted)}
+.r-bar{flex:1;background:#f0ede6;border-radius:6px;height:14px;overflow:hidden}
+.r-bar i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.r-bar-row b{width:86px;flex:none;text-align:right;font-size:12px}
+.r-src{font-size:12px;line-height:2;word-break:break-all}
+.r-src a{color:var(--accent)}
+
 </style>
 </head>
 <body>
@@ -85,6 +116,11 @@ main{max-width:860px;margin:0 auto;padding:16px 12px 120px}
   <header>
     <h1>転職先候補リスト</h1>
     <div class="sub" id="updatedAt"></div>
+    <div class="tabs">
+      <button class="tab on" id="tabList">候補リスト</button>
+      <button class="tab" id="tabResearch">深掘りリサーチ</button>
+    </div>
+    <div id="listToolbar">
     <div class="toolbar">
       <input type="search" id="q" placeholder="会社名・ポジションで検索">
       <select id="fCat"><option value="">全カテゴリ</option></select>
@@ -99,8 +135,156 @@ main{max-width:860px;margin:0 auto;padding:16px 12px 120px}
       <button class="chip-toggle" id="fCaution">要注意のみ</button>
     </div>
     <div class="count" id="count"></div>
+    </div>
   </header>
   <main id="list"></main>
+<main id="research" class="hidden">
+  <div class="r-card">
+    <h2>星つき4社 深掘りリサーチ</h2>
+    <p class="r-note">2026-10-17調査。業績・財務と評判・口コミを深掘り。「未確認」は公開情報で確認できなかった項目。推測には※を付けたよ。</p>
+    <div class="r-sum">
+      <div class="r-sumcard"><b>エイブリック</b><span class="r-stab ok">安定性 ○</span><p>従業員862名・離職率2.7%。親会社セグメントは増収増益。</p></div>
+      <div class="r-sumcard"><b>Beyont</b><span class="r-stab warn">安定性 △</span><p>売上・利益・口コミとも未確認。検証不能。</p></div>
+      <div class="r-sumcard"><b>Yumi Core Body</b><span class="r-stab warn">安定性 △</span><p>創業者ブランドへの依存度が高い。財務非開示。</p></div>
+      <div class="r-sumcard"><b>日経メディアプロモーション</b><span class="r-stab ok">安定性 ○</span><p>日経100%子会社・60年超の歴史。業績は非開示。</p></div>
+    </div>
+  </div>
+
+  <div class="r-card">
+    <h2>4社比較</h2>
+    <table class="r-table">
+      <tr><th>会社</th><th>安定性</th><th>従業員</th><th>売上・利益</th><th>口コミ</th><th>最大のリスク</th></tr>
+      <tr><td>エイブリック</td><td>○</td><td>862名</td><td>単体は非開示。親セグメント FY3/2026 売上5,903億円・営利267億円</td><td>公開スコアなし。離職率2.7%</td><td>親会社依存、半導体市況の波</td></tr>
+      <tr><td>Beyont</td><td>△</td><td>62名（旧情報）</td><td>未確認</td><td>なし</td><td>業績が検証不能、創業者依存</td></tr>
+      <tr><td>Yumi Core Body</td><td>△</td><td>未確認</td><td>未確認（資本金5,000万円）</td><td>1件のみ（非公開）</td><td>創業者ブランド依存</td></tr>
+      <tr><td>日経メディアプロモーション</td><td>○</td><td>165名</td><td>未確認</td><td>なし</td><td>新聞・紙媒体の構造的縮小</td></tr>
+    </table>
+  </div>
+
+  <div class="r-card">
+    <h2>エイブリック株式会社<span class="r-stab ok">安定性 ○</span></h2>
+    <p class="r-note">アナログ半導体IDM。ミネベアミツミ（東証プライム6479）の100%子会社。本社＝千葉県千葉市美浜区（幕張）。</p>
+    <h3>業績・財務</h3>
+    <ul>
+      <li>従業員862名（単体・2025年3月末）＋海外子会社75名、資本金92.5億円（2018年時点）</li>
+      <li>ABLIC単体の売上・利益は非開示</li>
+      <li>親セグメント「Semiconductors &amp; Electronics」：FY3/2025 売上5,276億円・営利220億円（4.2%）→ FY3/2026 売上5,903億円・営利267億円（4.5%）</li>
+      <li>親はアナログ半導体で2029年3月期売上2,000億円目標、2024年12月にソシオネクストのメディカル事業を買収</li>
+    </ul>
+    <div class="r-bars">
+      <div class="r-bar-row"><span>売上 FY3/2025</span><div class="r-bar"><i style="width:89%"></i></div><b>5,276億円</b></div>
+      <div class="r-bar-row"><span>売上 FY3/2026</span><div class="r-bar"><i style="width:100%"></i></div><b>5,903億円</b></div>
+      <div class="r-bar-row"><span>営業利益 FY3/2025</span><div class="r-bar"><i style="width:82%"></i></div><b>220億円</b></div>
+      <div class="r-bar-row"><span>営業利益 FY3/2026</span><div class="r-bar"><i style="width:100%"></i></div><b>267億円</b></div>
+    </div>
+    <h3>評判・口コミ</h3>
+    <ul>
+      <li>OpenWork・転職会議で公開スコア・口コミは確認できず</li>
+      <li>2024年度の自己都合離職率2.70%と低水準（公式CSR）</li>
+      <li>2025年「HRX of The Year」ウェルビーイング賞受賞（介護両立支援）</li>
+    </ul>
+    <h3>安定性の見方</h3>
+    <ul>
+      <li>プラス：親会社の成長戦略の一角で投資が継続（医療IC分野を買収で強化中）</li>
+      <li>リスク：100%子会社のため経営方針は親会社主導。半導体市況の循環性（セグメント利益率はFY3/2023の7.9%→FY3/2025の4.2%→FY3/2026に4.5%へ回復）</li>
+    </ul>
+    <p class="r-note">注意：本社は千葉・幕張（求人票の「汐留本社」と食い違いあり→面談で勤務地を確認）</p>
+  </div>
+
+  <div class="r-card">
+    <h2>株式会社Beyont<span class="r-stab warn">安定性 △</span></h2>
+    <p class="r-note">2018年創業のAIソリューションカンパニー。スキルアップAI→スキルアップNeXtを経て2026年7月にBeyontへ2度目の商号変更。本社＝千代田区神田神保町。未上場。</p>
+    <h3>業績・財務</h3>
+    <ul>
+      <li>売上高・利益・資本金は未確認（未上場・決算非開示）。VC等からの公開調達情報もなし</li>
+      <li>自社発表の事業実績：8年間で1,000社超・延べ8万人超の学習支援</li>
+      <li>従業員62名（スキルアップAI時代の転職ドラフト情報、現時点は未確認）</li>
+    </ul>
+    <h3>評判・口コミ</h3>
+    <ul>
+      <li>OpenWork・転職会議・enライトハウス等で公開スコア・口コミは確認できず</li>
+      <li>参考：経産省GXリーグでGX人材市場創造WGのリーダー企業として「GXスキル標準」を策定（業界での存在感はある）</li>
+    </ul>
+    <h3>安定性の見方</h3>
+    <ul>
+      <li>リスク：業績が一切非開示のため経営の健全性を求職者が検証できない</li>
+      <li>リスク：2度の商号変更で認知度の再構築が必要※、AIコンサル・研修市場は競合が多い※、創業者主導の色が強い</li>
+    </ul>
+    <p class="r-note">注意：広報経験「2年目安」に対しマーケ経験は約1.5年→定義を面談で確認</p>
+  </div>
+
+  <div class="r-card">
+    <h2>株式会社Yumi Core Body<span class="r-stab warn">安定性 △</span></h2>
+    <p class="r-note">2018年9月設立、代表＝村田友美子（Yumico）。女性向けボディメイクスタジオ「YUMICORE」全国10店舗＋オンラインレッスン会員1.5万人超。資本金5,000万円、本社＝港区六本木。未上場。</p>
+    <h3>業績・財務</h3>
+    <ul>
+      <li>売上高・利益・従業員数は未確認（未上場・決算非開示）</li>
+      <li>事業規模の代理指標：10店舗展開＋オンライン会員1.5万人（2026年7月時点）</li>
+      <li>代表の著書9冊・累計40万部、SNS総フォロワー100万人超とブランド力は強い</li>
+    </ul>
+    <h3>評判・口コミ</h3>
+    <ul>
+      <li>転職会議に旧社名「YCB Holdings」で登録、口コミは1件のみ（内容は非公開）でスコアなし</li>
+      <li>OpenWork等でも公開スコアを確認できず</li>
+    </ul>
+    <h3>安定性の見方</h3>
+    <ul>
+      <li>リスク：創業者＝Yumico個人のブランドへの依存度が極めて高い※（著書・メディア露出が集客の柱）</li>
+      <li>リスク：フィットネス・美容業界は競争が激しく、店舗拡大に伴う人材確保・品質維持が課題※。資本金5,000万円の小規模企業</li>
+    </ul>
+    <p class="r-note">注意：給与は「応相談」で非開示→応募前にレンジ確認を。労働条件の直接確認が必須</p>
+  </div>
+
+  <div class="r-card">
+    <h2>日経メディアプロモーション株式会社<span class="r-stab ok">安定性 ○</span></h2>
+    <p class="r-note">日本経済新聞社100%子会社。1962年設立→2009年現社名、60年超の歴史。本社＝千代田区内神田。日経グループの販売促進・総合営業会社。非上場。</p>
+    <h3>業績・財務</h3>
+    <ul>
+      <li>売上高・利益・資本金は未確認（非上場・決算非開示）</li>
+      <li>従業員165名（2026年4月・公式）</li>
+    </ul>
+    <h3>評判・口コミ</h3>
+    <ul>
+      <li>OpenWork・転職会議等で公開スコア・口コミは確認できず</li>
+      <li>別会社の「日経ピーアール」「日経イベント・プロ」と混同注意</li>
+    </ul>
+    <h3>安定性の見方</h3>
+    <ul>
+      <li>プラス：日経100%子会社で60年超の歴史、倒産リスクは低い※</li>
+      <li>リスク：新聞・紙媒体事業自体が構造的に縮小傾向にあり、販売促進会社の存在意義・人員規模に影響し得る※。業績非開示のため収益性は不明</li>
+    </ul>
+    <p class="r-note">注意：年収400〜500万円は希望より低め、業務は営業寄り。要件は14年の営業推進経験でクリア可能</p>
+  </div>
+
+  <div class="r-card">
+    <h2>調査上の留意点</h2>
+    <ul>
+      <li>口コミスコアは4社とも公開情報で確認できなかった。面接・選考過程での直接ヒアリング（残業実態・有給取得・離職率）が必須。</li>
+      <li>未上場3社は売上・利益が非開示。帝国データバンク・東京商工リサーチ等の企業情報サービスでの有料調査も選択肢。</li>
+      <li>社名変更・類似社名に注意：Beyont（旧スキルアップNeXt）、Yumi Core Body（旧YCB Holdings）は口コミサイト上で旧社名登録の可能性あり。</li>
+    </ul>
+  </div>
+
+  <div class="r-card">
+    <h2>出典</h2>
+    <div class="r-src">
+      <a href="https://www.ablic.com/en/semicon/corp/csr/employee/" target="_blank" rel="noopener">ABLIC公式CSR（従業員・離職率）</a><br>
+      <a href="https://www.ablic.com/en/semicon/news/2018/01/05/start/" target="_blank" rel="noopener">ABLIC商号変更発表</a><br>
+      <a href="https://peragaru-assets.s3.ap-northeast-1.amazonaws.com/TDNet/6479/140120241210536107.pdf" target="_blank" rel="noopener">ミネベアミツミTDNet開示（2024-12-10）</a><br>
+      <a href="https://www.minebeamitsumi.com/english/corp/investors/financials/segment/annual/" target="_blank" rel="noopener">ミネベアミツミ セグメント情報</a><br>
+      <a href="https://xtech.nikkei.com/atcl/nxt/mag/ne/18/00007/00260/" target="_blank" rel="noopener">日経クロステック</a><br>
+      <a href="https://b2b-ch.infomart.co.jp/news/amp/detail.page?IMNEWS4=6201503" target="_blank" rel="noopener">HRX of The Year 2025</a><br>
+      <a href="https://prtimes.jp/a/?c=35215&amp;r=209&amp;f=d35215-209-7f9bcf1456a1d1db2afe7f25a5e85769.pdf" target="_blank" rel="noopener">Beyont商号変更プレスリリース</a><br>
+      <a href="https://www.asahi.com/and/pressrelease/16903123" target="_blank" rel="noopener">朝日新聞 &amp;MAGAZINE（GX検定）</a><br>
+      <a href="https://job-draft.jp/scout/biddings/113864" target="_blank" rel="noopener">転職ドラフト会社情報</a><br>
+      <a href="https://www.sankei.com/pressrelease/prtimes/BIJC3QZ57VLLPH5KCMN7NCZQOQ/" target="_blank" rel="noopener">YumiCoreBody会社概要（PR TIMES）</a><br>
+      <a href="https://b2b-ch.infomart.co.jp/news/detail.page?IMNEWS4=6247816" target="_blank" rel="noopener">YUMICORE初のCM</a><br>
+      <a href="https://jobtalk.jp/companies/10765499" target="_blank" rel="noopener">転職会議 Yumi Core Body</a><br>
+      <a href="https://ja.wikipedia.org/wiki/%E6%97%A5%E7%B5%8C%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%E3%83%97%E3%83%AD%E3%83%A2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3" target="_blank" rel="noopener">Wikipedia 日経メディアプロモーション</a><br>
+      <a href="https://www.nikkeimp.co.jp/files/user/images/company/nikkeimp_companyprof_2020.pdf" target="_blank" rel="noopener">日経MP公式会社案内</a>
+    </div>
+  </div>
+</main>
   <button id="fab" title="追加">＋</button>
 </div>
 
@@ -281,6 +465,17 @@ $('fCurated').onclick=()=>toggle('fCurated');
 $('fNew').onclick=()=>toggle('fNew');
 $('fCaution').onclick=()=>toggle('fCaution');
 $('fab').onclick=()=>$('modal').classList.remove('hidden');
+function showPane(which){
+  const isList=which==='list';
+  $('tabList').classList.toggle('on',isList);
+  $('tabResearch').classList.toggle('on',!isList);
+  $('listToolbar').classList.toggle('hidden',!isList);
+  $('list').classList.toggle('hidden',!isList);
+  $('research').classList.toggle('hidden',isList);
+  $('fab').classList.toggle('hidden',!isList);
+}
+$('tabList').onclick=()=>showPane('list');
+$('tabResearch').onclick=()=>showPane('research');
 $('addCancel').onclick=()=>$('modal').classList.add('hidden');
 $('addSave').onclick=addItem;
 boot();
