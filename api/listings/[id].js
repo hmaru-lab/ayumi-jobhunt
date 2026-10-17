@@ -1,7 +1,7 @@
 const { isAuthed } = require('../../lib/auth');
 const { loadListings, saveListings } = require('../../lib/store');
 
-const EDITABLE = ['status', 'starred', 'caution', 'memo', 'category'];
+const EDITABLE = ['status', 'starred', 'caution', 'memo', 'category', 'curated'];
 
 module.exports = async (req, res) => {
   if (!isAuthed(req)) return res.status(401).json({ error: 'unauthorized' });

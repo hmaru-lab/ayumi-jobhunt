@@ -64,6 +64,7 @@ main{max-width:860px;margin:0 auto;padding:16px 12px 120px}
 .modal-btns button{flex:1;padding:10px;border-radius:8px;font-size:14px;cursor:pointer}
 .btn-primary{background:var(--accent);color:#fff;border:none}
 .btn-secondary{background:#f0ede6;border:none}
+.badge.curated{background:#fff4e0;color:#b7791f;font-weight:700}
 .loading{text-align:center;color:var(--muted);padding:40px}
 .err-box{background:#fdecea;color:var(--danger);border-radius:8px;padding:12px;margin-bottom:12px;font-size:13px}
 </style>
@@ -93,6 +94,7 @@ main{max-width:860px;margin:0 auto;padding:16px 12px 120px}
         <option>選考中</option><option>見送り</option>
       </select>
       <button class="chip-toggle" id="fStar">★のみ</button>
+      <button class="chip-toggle" id="fCurated">厳選のみ</button>
       <button class="chip-toggle" id="fNew">新着のみ</button>
       <button class="chip-toggle" id="fCaution">要注意のみ</button>
     </div>
@@ -170,12 +172,13 @@ function buildCatFilter(){
 }
 function filtered(){
   const q=$('q').value.trim().toLowerCase(),c=$('fCat').value,s=$('fStatus').value;
-  const st=$('fStar').classList.contains('on'),nw=$('fNew').classList.contains('on'),ca=$('fCaution').classList.contains('on');
+  const st=$('fStar').classList.contains('on'),cu=$('fCurated').classList.contains('on'),nw=$('fNew').classList.contains('on'),ca=$('fCaution').classList.contains('on');
   return DATA.filter(x=>{
     if(q&&!(x.company+' '+x.position).toLowerCase().includes(q))return false;
     if(c&&x.category!==c)return false;
     if(s&&x.status!==s)return false;
     if(st&&!x.starred)return false;
+    if(cu&&!x.curated)return false;
     if(nw&&!isNew(x))return false;
     if(ca&&!x.caution)return false;
     return true;
@@ -201,11 +204,13 @@ function card(x){
           ${x.remote?`<span class="badge">${esc(x.remote)}</span>`:''}
           ${x.category?`<span class="badge cat">${esc(x.category)}</span>`:''}
           ${isNew(x)?'<span class="badge new">NEW</span>':''}
+          ${x.curated?'<span class="badge curated">厳選</span>':''}
           ${x.caution?'<span class="badge warn">要注意</span>':''}
         </div>
         <div class="card-actions">
           <select data-act="status">${STATUSES.map(s=>`<option${s===x.status?' selected':''}>${s}</option>`).join('')}</select>
           <button class="mini-btn" data-act="caution">${x.caution?'要注意を外す':'要注意にする'}</button>
+          <button class="mini-btn" data-act="curated">${x.curated?'厳選を外す':'厳選に入れる'}</button>
           <button class="mini-btn" data-act="detail">詳細</button>
           ${x.url?`<a class="mini-btn" href="${esc(x.url)}" target="_blank" rel="noopener">求人ページ</a>`:''}
           <button class="mini-btn danger" data-act="del">削除</button>
@@ -227,6 +232,7 @@ function bindCard(x){
   el.querySelector('[data-act=star]').onclick=async e=>{await patch(x.id,{starred:!x.starred});};
   el.querySelector('[data-act=status]').onchange=async e=>{await patch(x.id,{status:e.target.value});};
   el.querySelector('[data-act=caution]').onclick=async e=>{await patch(x.id,{caution:!x.caution});};
+  el.querySelector('[data-act=curated]').onclick=async e=>{await patch(x.id,{curated:!x.curated});};
   el.querySelector('[data-act=detail]').onclick=()=>{el.querySelector('[data-act=details]').classList.toggle('hidden');};
   el.querySelector('[data-act=del]').onclick=async ()=>{
     if(!confirm('削除する？'))return;
@@ -271,6 +277,7 @@ $('passcode').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 $('q').addEventListener('input',render);
 $('fCat').onchange=render;$('fStatus').onchange=render;
 $('fStar').onclick=()=>toggle('fStar');
+$('fCurated').onclick=()=>toggle('fCurated');
 $('fNew').onclick=()=>toggle('fNew');
 $('fCaution').onclick=()=>toggle('fCaution');
 $('fab').onclick=()=>$('modal').classList.remove('hidden');
